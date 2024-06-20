@@ -43,11 +43,17 @@ def decrypt(message, key):
     return caesar_cipher(message, key, -1)
 
 def main():
-    text = 'mrttaqrhknsw ih puggrur'
+    # Prompt user for input and validate it
+    while True:
+        text = input('Enter a sentence (only alphabets allowed): ')
+        if text.isalpha():  # Check if input contains only alphabetic characters
+            break
+        else:
+            print("Error: Input should contain only alphabetic characters. Please try again.")
+
     custom_key = 'python'
 
     encrypted_text = encrypt(text, custom_key)
-    print(f'Original text: {text}')
     print(f'Encrypted text: {encrypted_text}')
     print(f'Key used: {custom_key}')
 
