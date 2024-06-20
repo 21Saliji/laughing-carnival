@@ -2,9 +2,9 @@ ALPHABET = 'abcdefghijklmnopqrstuvwxyz'
 
 def get_clean_message(text):
     """
-    Removes non-alphabetic characters from the message.
+    Removes non-alphabetic characters from the message, preserving spaces.
     """
-    cleaned_message = ''.join(char for char in text.lower() if char.isalpha())
+    cleaned_message = ''.join(char.lower() for char in text if char.isalpha() or char.isspace())
     return cleaned_message
 
 def generate_key(message, key):
@@ -23,10 +23,13 @@ def caesar_cipher(message, key, direction=1):
     final_message = ''
 
     for char, key_char in zip(cleaned_message, repeated_key):
-        offset = ALPHABET.index(key_char)
-        index = ALPHABET.find(char)
-        new_index = (index + offset * direction) % len(ALPHABET)
-        final_message += ALPHABET[new_index]
+        if char.isalpha():  # Only encrypt/decrypt alphabetic characters
+            offset = ALPHABET.index(key_char)
+            index = ALPHABET.find(char)
+            new_index = (index + offset * direction) % len(ALPHABET)
+            final_message += ALPHABET[new_index]
+        else:
+            final_message += char  # Preserve spaces
 
     return final_message
 
@@ -46,7 +49,7 @@ def main():
     # Prompt user for input and validate it
     while True:
         text = input('Enter a sentence (only alphabets allowed): ')
-        if text.isalpha():  # Check if input contains only alphabetic characters
+        if text.isalpha() or ' ' in text:  # Check if input contains only alphabetic characters or spaces
             break
         else:
             print("Error: Input should contain only alphabetic characters. Please try again.")
